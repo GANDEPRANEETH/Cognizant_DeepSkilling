@@ -1,0 +1,15 @@
+# IDE files
+.vscode/
+.idea/
+
+# Application configuration (Password unnadi kabatti idhi ignore chestundi)
+src/main/resources/application.properties
+
+# Build/Target files
+target/
+*.class
+*.jar
+*.war
+
+# OS metadata
+.DS_Store

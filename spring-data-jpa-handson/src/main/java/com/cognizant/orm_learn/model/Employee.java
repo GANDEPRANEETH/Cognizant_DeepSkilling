@@ -1,5 +1,6 @@
 package com.cognizant.orm_learn.model;
-
+import java.util.Set;
+import com.cognizant.orm_learn.model.Skill;
 import jakarta.persistence.*;
 import java.util.Date;
 
@@ -23,9 +24,19 @@ public class Employee {
 
     @Column(name = "em_date_of_birth")
     private Date dateOfBirth;
+    
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "em_dp_id")
     private Department department;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "employee_skill",
+        joinColumns = @JoinColumn(name = "es_em_id"),
+        inverseJoinColumns = @JoinColumn(name = "es_sk_id"))
+    private Set<Skill> skillList;
+    public Set<Skill> getSkillList() {
+    return skillList;
+}
 
     public Department getDepartment() {
     return department;
@@ -33,6 +44,9 @@ public class Employee {
 
 public void setDepartment(Department department) {
     this.department = department;
+}
+public void setSkillList(Set<Skill> skillList) {
+    this.skillList = skillList;
 }
     
 

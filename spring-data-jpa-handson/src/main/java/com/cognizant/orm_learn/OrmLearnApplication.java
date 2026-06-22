@@ -1,35 +1,52 @@
 package com.cognizant.orm_learn;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.cognizant.orm_learn.service.AttemptService;
 import com.cognizant.orm_learn.service.DepartmentService;
 import com.cognizant.orm_learn.service.EmployeeService;
 import com.cognizant.orm_learn.service.SkillService;
+import com.cognizant.orm_learn.model.Attempt;
 import com.cognizant.orm_learn.model.Department;
 import com.cognizant.orm_learn.model.Employee;
 import com.cognizant.orm_learn.model.Skill;
+//import java.util.List;
 
 @SpringBootApplication
+@ComponentScan(basePackages = {"com.cognizant.orm_learn"})
 public class OrmLearnApplication {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrmLearnApplication.class);
     private static DepartmentService departmentService;
     private static EmployeeService employeeService;
     private static SkillService skillService;
-
+    private static AttemptService attemptService;
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(OrmLearnApplication.class, args);
+        String[] beanNames = context.getBeanDefinitionNames();
+        for (String beanName : beanNames) {
+        if (beanName.contains("attemptService")) {
+            System.out.println("Found bean: " + beanName);
+        }
+    }
         departmentService = context.getBean(DepartmentService.class);
         employeeService = context.getBean(EmployeeService.class);
         skillService = context.getBean(SkillService.class);
+        attemptService = context.getBean(AttemptService.class);
+        OrmLearnApplication app = context.getBean(OrmLearnApplication.class);
         
         testGetDepartment();
         testGetEmployee();
         testAddSkillToEmployee();
         testGetEmployee(); 
+        testGetAllPermanentEmployees();
+        app.testGetAttemptDetails();
     }
 
     private static void testGetDepartment() {
@@ -56,4 +73,22 @@ public class OrmLearnApplication {
         LOGGER.info("Skill added successfully!");
         LOGGER.info("End");
     }
+
+    public static void testGetAllPermanentEmployees() {
+    LOGGER.info("Start"); 
+    //List<Employee> employees = employeeService.getAllPermanentEmployees(); 
+    //LOGGER.debug("Permanent Employees:{}", employees); 
+    //employees.forEach(e -> LOGGER.debug("Skills:{}", e.getSkillList())); 
+    LOGGER.info("End");  
+    }
+    public void testGetAttemptDetails() {
+    LOGGER.info("Fetching attempt details for User ID: 1");
+
+    java.util.Set<com.cognizant.orm_learn.model.Attempt> attempts = attemptService.getAttemptDetails(1);
+    
+        for (com.cognizant.orm_learn.model.Attempt attempt : attempts) {
+        LOGGER.info("Attempt ID: {}, Date: {}", attempt.getId(), attempt.getDate());
+        }
+    }
+
 }

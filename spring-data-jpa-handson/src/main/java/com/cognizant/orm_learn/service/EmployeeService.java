@@ -1,5 +1,5 @@
 package com.cognizant.orm_learn.service;
-
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,4 +28,10 @@ public class EmployeeService {
         employeeRepository.save(employee); // Employee ni save chesthundi [cite: 163]
         LOGGER.info("End");
     }
+      @Transactional
+    public List<Employee> getAllPermanentEmployees() {
+    LOGGER.info("Start");
+    return employeeRepository.getAllPermanentEmployees();
+    }
+    
 }

@@ -16,7 +16,7 @@ import com.cognizant.orm_learn.model.Attempt;
 import com.cognizant.orm_learn.model.Department;
 import com.cognizant.orm_learn.model.Employee;
 import com.cognizant.orm_learn.model.Skill;
-//import java.util.List;
+import java.util.List;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.cognizant.orm_learn"})
@@ -47,6 +47,9 @@ public class OrmLearnApplication {
         testGetEmployee(); 
         testGetAllPermanentEmployees();
         app.testGetAttemptDetails();
+        testGetAverageSalary();
+        testGetAllEmployeesNative();
+        testGetEmployeesByCriteria();
     }
 
     private static void testGetDepartment() {
@@ -76,9 +79,7 @@ public class OrmLearnApplication {
 
     public static void testGetAllPermanentEmployees() {
     LOGGER.info("Start"); 
-    //List<Employee> employees = employeeService.getAllPermanentEmployees(); 
-    //LOGGER.debug("Permanent Employees:{}", employees); 
-    //employees.forEach(e -> LOGGER.debug("Skills:{}", e.getSkillList())); 
+ 
     LOGGER.info("End");  
     }
     public void testGetAttemptDetails() {
@@ -90,5 +91,26 @@ public class OrmLearnApplication {
         LOGGER.info("Attempt ID: {}, Date: {}", attempt.getId(), attempt.getDate());
         }
     }
+    private static void testGetAverageSalary() {
+    LOGGER.info("Start");
+    double avgSalary = employeeService.getAverageSalary(1); 
+    LOGGER.info("Average Salary: {}", avgSalary);
+    LOGGER.info("End");
+    }
+    private static void testGetAllEmployeesNative() {
+    LOGGER.info("Start");
+    List<Employee> employees = employeeService.getAllEmployeesNative();
+    employees.forEach(e -> LOGGER.info("Employee: {}", e.getName()));
+    LOGGER.info("End");
+    }
+    private static void testGetEmployeesByCriteria() {
+    LOGGER.info("Start");
+    // Test: Search for employees named "John Doe" with a salary > 40000
+    List<Employee> employees = employeeService.getEmployeesByCriteria("John Doe", 40000.0);
+    
+    employees.forEach(e -> LOGGER.info("Found: {} | Salary: {}", e.getName(), e.getSalary()));
+    LOGGER.info("End");
+}
+    
 
 }

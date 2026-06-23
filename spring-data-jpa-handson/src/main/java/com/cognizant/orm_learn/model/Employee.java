@@ -1,11 +1,17 @@
 package com.cognizant.orm_learn.model;
 import java.util.Set;
+import java.time.LocalDateTime;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 //import com.cognizant.orm_learn.model.Skill;
 import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "employee")
+@EntityListeners(AuditingEntityListener.class)
 public class Employee {
 
     @Id
@@ -24,6 +30,13 @@ public class Employee {
 
     @Column(name = "em_date_of_birth")
     private Date dateOfBirth;
+    @CreatedDate
+    @Column(name = "em_created_date")
+    private LocalDateTime createdDate;
+
+    @LastModifiedDate
+    @Column(name = "em_modified_date")
+    private LocalDateTime modifiedDate;
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "em_dp_id")
@@ -48,7 +61,25 @@ public void setDepartment(Department department) {
 public void setSkillList(Set<Skill> skillList) {
     this.skillList = skillList;
 }
-    
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(LocalDateTime modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+    public interface EmployeeProjection {
+    String getName(); 
+    double getSalary(); 
+    }
 
     public Employee() {}
 

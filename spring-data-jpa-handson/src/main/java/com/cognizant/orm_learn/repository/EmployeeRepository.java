@@ -6,7 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.cognizant.orm_learn.model.Employee;
+import com.cognizant.orm_learn.model.EmployeeProjection;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
@@ -16,5 +19,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     double getAverageSalary(@Param("id") int id);
     @Query(value = "SELECT * FROM employee", nativeQuery = true)
     List<Employee> getAllEmployeesNative();
+    Page<Employee> findAll(Pageable pageable);
+    List<EmployeeProjection> findAllProjectedBy();
     
 }

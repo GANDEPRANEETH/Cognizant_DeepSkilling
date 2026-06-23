@@ -5,8 +5,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.PageRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import com.cognizant.orm_learn.service.AttemptService;
 import com.cognizant.orm_learn.service.DepartmentService;
@@ -15,10 +21,14 @@ import com.cognizant.orm_learn.service.SkillService;
 import com.cognizant.orm_learn.model.Attempt;
 import com.cognizant.orm_learn.model.Department;
 import com.cognizant.orm_learn.model.Employee;
+import com.cognizant.orm_learn.model.EmployeeProjection;
 import com.cognizant.orm_learn.model.Skill;
+import com.cognizant.orm_learn.repository.EmployeeRepository;
+
 import java.util.List;
 
 @SpringBootApplication
+@EnableJpaAuditing
 @ComponentScan(basePackages = {"com.cognizant.orm_learn"})
 public class OrmLearnApplication {
 
@@ -27,6 +37,7 @@ public class OrmLearnApplication {
     private static EmployeeService employeeService;
     private static SkillService skillService;
     private static AttemptService attemptService;
+    private static EmployeeRepository employeeRepository;
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(OrmLearnApplication.class, args);
         String[] beanNames = context.getBeanDefinitionNames();
@@ -39,6 +50,7 @@ public class OrmLearnApplication {
         employeeService = context.getBean(EmployeeService.class);
         skillService = context.getBean(SkillService.class);
         attemptService = context.getBean(AttemptService.class);
+        employeeRepository = context.getBean(EmployeeRepository.class);
         OrmLearnApplication app = context.getBean(OrmLearnApplication.class);
         
         testGetDepartment();
@@ -50,6 +62,8 @@ public class OrmLearnApplication {
         testGetAverageSalary();
         testGetAllEmployeesNative();
         testGetEmployeesByCriteria();
+        testPaginationAndSorting();
+        testProjections();
     }
 
     private static void testGetDepartment() {
@@ -110,7 +124,30 @@ public class OrmLearnApplication {
     
     employees.forEach(e -> LOGGER.info("Found: {} | Salary: {}", e.getName(), e.getSalary()));
     LOGGER.info("End");
-}
+    }
+    private static void testPaginationAndSorting() {
+    LOGGER.info("Start");
+    
+   
+    Pageable pageable = PageRequest.of(0, 3, Sort.by("name").ascending());
+    
+    Page<Employee> employees = employeeService.getAllEmployees(pageable);
+    
+    employees.forEach(e -> LOGGER.info("Employee: {} | Department: {}", 
+        e.getName(), e.getDepartment().getName()));
+        
+    LOGGER.info("End");
+    }
+    private static void testProjections() {
+    LOGGER.info("Start");
+    
+    List<EmployeeProjection> projections = employeeRepository.findAllProjectedBy();
+    
+    // Inside testProjections()
+    projections.forEach(p -> LOGGER.info("Name: {} | Salary: {}", p.getName(), p.getSalary()));
+    
+    LOGGER.info("End");
+    }
     
 
 }

@@ -78,5 +78,8 @@ public class EmployeeService {
         public Page<Employee> getAllEmployees(Pageable pageable) {
         return employeeRepository.findAll(pageable);
     }
+    public List<Employee> getAllEmployees() {
+    return employeeRepository.findAll();
+}
 
 }

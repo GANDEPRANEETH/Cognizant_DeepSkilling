@@ -5,14 +5,19 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.domain.PageRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.cognizant.orm_learn.service.AttemptService;
 import com.cognizant.orm_learn.service.DepartmentService;
@@ -25,11 +30,13 @@ import com.cognizant.orm_learn.model.EmployeeProjection;
 import com.cognizant.orm_learn.model.Skill;
 import com.cognizant.orm_learn.repository.EmployeeRepository;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @SpringBootApplication
 @EnableJpaAuditing
 @ComponentScan(basePackages = {"com.cognizant.orm_learn"})
+@ImportResource("classpath:date-format.xml")
 public class OrmLearnApplication {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrmLearnApplication.class);
@@ -40,12 +47,15 @@ public class OrmLearnApplication {
     private static EmployeeRepository employeeRepository;
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(OrmLearnApplication.class, args);
+        //SpringApplication.run(OrmLearnApplication.class, args);
         String[] beanNames = context.getBeanDefinitionNames();
         for (String beanName : beanNames) {
         if (beanName.contains("attemptService")) {
             System.out.println("Found bean: " + beanName);
         }
+        
     }
+        new Thread(() -> {
         departmentService = context.getBean(DepartmentService.class);
         employeeService = context.getBean(EmployeeService.class);
         skillService = context.getBean(SkillService.class);
@@ -64,8 +74,19 @@ public class OrmLearnApplication {
         testGetEmployeesByCriteria();
         testPaginationAndSorting();
         testProjections();
-    }
+        displayDate(context);
+        
+        
 
+        }).start();
+    }
+    @Bean
+    public CommandLineRunner runTests(DepartmentService departmentService, EmployeeService employeeService) {
+        return args -> {
+            System.out.println("Spring Boot Web Server is starting...");
+           
+        };
+    }
     private static void testGetDepartment() {
         LOGGER.info("Start");
         Department department = departmentService.get(1);
@@ -148,6 +169,32 @@ public class OrmLearnApplication {
     
     LOGGER.info("End");
     }
+    public static void displayDate(ApplicationContext context) {
+    
+    // 2. Get the dateFormat bean
+    SimpleDateFormat format = context.getBean("dateFormat", SimpleDateFormat.class);
+    
+    // 3. Try to parse the date and display it
+    try {
+        Date parsedDate = format.parse("31/12/2018");
+        System.out.println(parsedDate);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    LOGGER.info("START"); // Info log on start [cite: 75, 77]
+    
+    try {
+        Date parsedDate = format.parse("31/12/2018");
+        LOGGER.debug("Parsed date: {}", parsedDate); 
+    } catch (Exception e) {
+        LOGGER.error("Error parsing date", e); 
+    }
+    
+    LOGGER.info("END"); 
+
+
+    }
+    
     
 
 }

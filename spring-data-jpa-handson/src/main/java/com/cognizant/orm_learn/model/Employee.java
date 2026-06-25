@@ -5,6 +5,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 //import com.cognizant.orm_learn.model.Skill;
 import jakarta.persistence.*;
 import java.util.Date;
@@ -40,9 +42,11 @@ public class Employee {
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "em_dp_id")
+    @JsonIgnore
     private Department department;
 
     @ManyToMany(fetch = FetchType.EAGER)
+
     @JoinTable(name = "employee_skill",
         joinColumns = @JoinColumn(name = "es_em_id"),
         inverseJoinColumns = @JoinColumn(name = "es_sk_id"))

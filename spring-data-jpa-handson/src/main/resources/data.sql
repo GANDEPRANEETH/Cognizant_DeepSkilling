@@ -13,3 +13,6 @@ INSERT INTO stock (st_code, st_date, st_open, st_close, st_volume) VALUES ('NFLX
 
 INSERT INTO employee (em_id, em_name, em_salary, em_permanent, em_date_of_birth, em_dp_id)
 VALUES (1, 'John Doe', 50000, true, '1990-01-01', 1);
+
+INSERT INTO country (code, name) VALUES ('in', 'India');
+INSERT INTO country (code, name) VALUES ('us', 'United States');

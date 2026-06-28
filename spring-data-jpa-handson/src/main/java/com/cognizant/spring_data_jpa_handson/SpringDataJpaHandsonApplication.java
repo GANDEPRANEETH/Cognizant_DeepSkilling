@@ -8,9 +8,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.persistence.autoconfigure.EntityScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import com.cognizant.orm_learn.model.Employee;
 import com.cognizant.orm_learn.model.Skill;
 import com.cognizant.orm_learn.service.DepartmentService;
@@ -21,12 +24,14 @@ import com.cognizant.orm_learn.service.SkillService;
 @EntityScan("com.cognizant")
 @EnableJpaRepositories("com.cognizant") 
 @ComponentScan(basePackages = {"com.cognizant"})
+
 public class SpringDataJpaHandsonApplication implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringDataJpaHandsonApplication.class);
-
+    
     @Autowired
     private CountryRepository countryRepository;
+    
     
     
 
@@ -43,6 +48,13 @@ public class SpringDataJpaHandsonApplication implements CommandLineRunner {
     private StockRepository stockRepository;
     public static void main(String[] args) {
         SpringApplication.run(SpringDataJpaHandsonApplication.class, args);
+    }
+    @Bean
+    public CommandLineRunner loadData(CountryRepository repository) {
+        return args -> {
+            repository.save(new Country("in", "India"));
+            repository.save(new Country("us", "United States"));
+        };
     }
 
     @Override
@@ -98,5 +110,22 @@ public class SpringDataJpaHandsonApplication implements CommandLineRunner {
             LOGGER.info("Skill record ledu bro!");
         }
     }
+    @RestController
+    public class HelloController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelloController.class);
+
+    @GetMapping("/hello")
+    public String sayHello() {
+        LOGGER.info("START");
+        String message = "Hello World!!";
+        LOGGER.info("END");
+        return message;
+        
+    }
+    
+    
+
+   }
+   
 
 }

@@ -35,7 +35,8 @@ import java.util.List;
 
 @SpringBootApplication
 @EnableJpaAuditing
-@ComponentScan(basePackages = {"com.cognizant.orm_learn"})
+@ComponentScan(basePackages = {"com.cognizant.orm_learn", "com.cognizant.springlearn.security"})
+//@ComponentScan(basePackages = {"com.cognizant.orm_learn"})
 @ImportResource("classpath:date-format.xml")
 public class OrmLearnApplication {
 
@@ -55,14 +56,15 @@ public class OrmLearnApplication {
         }
         
     }
-        new Thread(() -> {
+       /* new Thread(() -> {
         departmentService = context.getBean(DepartmentService.class);
         employeeService = context.getBean(EmployeeService.class);
         skillService = context.getBean(SkillService.class);
         attemptService = context.getBean(AttemptService.class);
         employeeRepository = context.getBean(EmployeeRepository.class);
         OrmLearnApplication app = context.getBean(OrmLearnApplication.class);
-        
+        */
+       /* 
         testGetDepartment();
         testGetEmployee();
         testAddSkillToEmployee();
@@ -78,8 +80,9 @@ public class OrmLearnApplication {
         
         
 
-        }).start();
+        }).start();*/
     }
+    /* 
     @Bean
     public CommandLineRunner runTests(DepartmentService departmentService, EmployeeService employeeService) {
         return args -> {
@@ -194,7 +197,7 @@ public class OrmLearnApplication {
     LOGGER.info("END"); 
 
 
-    }
+    }*/
     
     
 

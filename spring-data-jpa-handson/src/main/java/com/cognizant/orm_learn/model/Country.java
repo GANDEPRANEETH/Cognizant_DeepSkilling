@@ -2,11 +2,18 @@ package com.cognizant.orm_learn.model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+@Entity
+@Table(name = "country")
 public class Country {
     private static final Logger LOGGER = LoggerFactory.getLogger(Country.class);
-    
+    @Id
+    @Column(name = "code")
     private String code;
+    @Column(name = "name")
     private String name;
 
     // 1. Default Constructor with Debug Log

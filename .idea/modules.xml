@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/EcommerceSearchExercise.iml" filepath="$PROJECT_DIR$/EcommerceSearchExercise.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/FinancialForecastingTool.iml" filepath="$PROJECT_DIR$/FinancialForecastingTool.iml" />
+>>>>>>> 0757955f5ef9bc81b96ab9cbea280360e7ec1f75
     </modules>
   </component>
 </project>

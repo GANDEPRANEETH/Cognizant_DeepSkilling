@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+// Import 'players' along with your components
+import { ListofPlayers, Scorebelow70, OddPlayers, EvenPlayers, IndianPlayers, players } from './Cricket';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    const flag = true;
 
+    return (
+        <div>
+            {flag ? (
+                <div>
+                    <h1>List of Players</h1>
+                    <ListofPlayers players={players} />
+                    <h1>List of Players having Scores Less than 70</h1>
+                    <Scorebelow70 players={players} />
+                </div>
+            ) : (
+                <div>
+                    <h1>Odd Players</h1>
+                    <OddPlayers players={IndianPlayers} />
+                    <h1>Even Players</h1>
+                    <EvenPlayers players={IndianPlayers} />
+                </div>
+            )}
+        </div>
+    );
+}
 export default App;

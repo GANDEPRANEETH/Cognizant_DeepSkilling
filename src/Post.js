@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import styles from './CohortDetails.module.css';
 class Posts extends Component {
     constructor(props) {
         super(props);
@@ -26,19 +26,21 @@ class Posts extends Component {
         alert("An error occurred: " + error.message);
     }
 
-    render() {
-        return (
-            <div>
-                <h1>Blog Posts</h1>
-                {this.state.posts.map(post => (
-                    <div key={post.id}>
-                        <h3>{post.title}</h3>
-                        <p>{post.body}</p>
-                    </div>
-                ))}
-            </div>
-        );
-    }
+        render() {
+            return (
+                <div>
+                    {this.state.posts.map(post => (
+                        // Apply the 'box' class here
+                        <div key={post.id} className={styles.box}>
+                            <h3 style={{ color: post.status === 'ongoing' ? 'green' : 'blue' }}>
+                                {post.title}
+                            </h3>
+                            <p>{post.body}</p>
+                        </div>
+                    ))}
+                </div>
+            );
+        }
 }
 
 export default Posts;

@@ -1,0 +1,16 @@
+angular.json: Configures the build and development tools for the Angular workspace, defining build targets, assets, styles, and scripts.
+tsconfig.json: The main TypeScript compiler configuration file for the workspace, defining compiler options and settings shared across the project.
+tsconfig.app.json: Application-specific TypeScript compiler configuration that inherits from tsconfig.json and defines compiler options for compiling the Angular app.
+package.json: Lists the project dependencies, devDependencies, and scripts for running, building, and testing the application.
+src/main.ts: The application entry point that bootstraps the Angular application by bootstrapping the root component with app.config.ts.
+src/app/app.config.ts: Configures the application's providers and services, such as routing, state management, and HTTP client providers.
+src/app/app.ts: The root component (App) of the application, which contains the logic and serves as the main shell for other components.
+src/index.html: The main HTML document that serves as the entry page of the SPA, containing the <app-root> placeholder where Angular renders the app.
+
+Budgets Configuration (under architect > build > configurations > production):
+These settings limit the bundle size of the application to prevent performance degradation:
+- "initial": Configures limits for the initial bundle loaded by the browser. maximumWarning is 500kB (warns if exceeded) and maximumError is 1MB (fails build if exceeded).
+- "anyComponentStyle": Configures limits for individual component stylesheet bundles. maximumWarning is 4kB and maximumError is 8kB.
+
+Compiled Application Code:
+Running `ng build` generates files in the `dist/` directory. The main compiled application logic is contained in `main-[hash].js` (e.g. `main-OZ2T5IEA.js`).

@@ -1,0 +1,46 @@
+<div class="profile-container">
+  <!-- Profile Summary Card -->
+  <div class="profile-card">
+    <div class="avatar-section">
+      <div class="avatar-placeholder">JD</div>
+    </div>
+    <div class="details-section">
+      <h2>{{ studentInfo.name }}</h2>
+      <p class="email">{{ studentInfo.email }}</p>
+      <div class="badge-row">
+        <span class="badge badge-major">{{ studentInfo.major }}</span>
+        <span class="badge badge-gpa">GPA: {{ studentInfo.gpa }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enrolled Courses Section (Task 6 Step 66) -->
+  <div class="enrolled-section">
+    <h3>My Registered Courses</h3>
+    @if (enrolledCourses$ | async; as enrolledCourses) {
+      @if (enrolledCourses.length > 0) {
+        <div class="enrolled-list">
+          @for (course of enrolledCourses; track course.id) {
+            <div class="enrolled-item">
+              <div class="course-info">
+                <span class="course-code">{{ course.code }}</span>
+                <h4 class="course-name">{{ course.name }}</h4>
+              </div>
+              <div class="course-meta">
+                <span class="credits">{{ course.credits }} Credits</span>
+                <span class="status-badge passed">{{ course.gradeStatus }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="empty-enrolled">
+          <p>You have not registered for any courses yet.</p>
+          <a href="/courses" class="btn btn-primary mt-2">Browse Courses</a>
+        </div>
+      }
+    }
+  </div>
+
+  <app-notification></app-notification>
+</div>

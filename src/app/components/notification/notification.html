@@ -1,0 +1,25 @@
+<div class="notification-widget">
+  <h4>Local Alerts & Notifications</h4>
+  <p class="desc">Demo of isolated component-scoped state (NotificationService).</p>
+
+  <div class="input-row">
+    <input 
+      type="text" 
+      [(ngModel)]="newMsg" 
+      placeholder="Type alert message..." 
+      class="form-control"
+      (keyup.enter)="add()">
+    <button class="btn btn-action" (click)="add()">Broadcast</button>
+  </div>
+
+  <ul class="notification-list">
+    @for (note of notificationService.getNotifications(); track note) {
+      <li class="note-item">
+        <span class="bullet"></span>
+        {{ note }}
+      </li>
+    } @empty {
+      <li class="note-empty">No active notifications.</li>
+    }
+  </ul>
+</div>

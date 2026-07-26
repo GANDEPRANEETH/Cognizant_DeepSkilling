@@ -1,0 +1,34 @@
+<div class="card-container" [ngClass]="cardClasses" [class.card--enrolled]="isEnrolled$ | async" [ngStyle]="borderStyle">
+  <div class="card-header-row">
+    <div class="title-section">
+      <span class="course-code">{{ course.code }}</span>
+      <h3 class="course-title">{{ course.name }}</h3>
+    </div>
+    
+    <div class="status-badge-container" [ngSwitch]="course.gradeStatus">
+      <span *ngSwitchCase="'passed'" class="badge badge-success">Passed</span>
+      <span *ngSwitchCase="'failed'" class="badge badge-error">Failed</span>
+      <span *ngSwitchCase="'pending'" class="badge badge-warning">Pending</span>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <p class="credits-text">{{ course.credits | creditLabel }}</p>
+    
+    <!-- Collapsible section (Task 3 Step 31) -->
+    <div class="details-collapse" [class.show]="isExpanded">
+      <div class="divider"></div>
+      <p class="instructor-placeholder"><strong>Instructor:</strong> Prof. Alex Mercer</p>
+      <p class="schedule-placeholder"><strong>Schedule:</strong> Mon/Wed 10:00 AM - 11:30 AM</p>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <button class="btn-text" (click)="toggleExpand()">
+      {{ isExpanded ? 'Hide Details' : 'Show Details' }}
+    </button>
+    <button class="btn btn-action" (click)="onEnroll()">
+      {{ (isEnrolled$ | async) ? 'Unenroll' : 'Enroll' }}
+    </button>
+  </div>
+</div>

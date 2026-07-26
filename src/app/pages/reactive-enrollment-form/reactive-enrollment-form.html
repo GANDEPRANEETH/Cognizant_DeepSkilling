@@ -1,0 +1,135 @@
+<div class="form-container">
+  <h2>Reactive Course Enrollment</h2>
+  <p class="subtitle">Enter your enrollment choices using our secure, validated reactive form.</p>
+
+  @if (submitted) {
+    <div class="alert alert-success">
+      <h4>Enrollment request submitted successfully!</h4>
+      <p>Logged in console. Check DevTools for details.</p>
+    </div>
+  }
+
+  <form [formGroup]="enrollForm" (ngSubmit)="onSubmit()" novalidate>
+    <!-- Student Name -->
+    <div class="form-group">
+      <label for="studentName">Student Name</label>
+      <input 
+        type="text" 
+        id="studentName" 
+        formControlName="studentName" 
+        class="form-control">
+      
+      @if (enrollForm.get('studentName')?.touched && enrollForm.get('studentName')?.errors?.['required']) {
+        <span class="error-msg">Name is required.</span>
+      }
+      @if (enrollForm.get('studentName')?.touched && enrollForm.get('studentName')?.errors?.['minlength']) {
+        <span class="error-msg">Name must be at least 3 characters.</span>
+      }
+    </div>
+
+    <!-- Student Email (with Async Email Check) -->
+    <div class="form-group">
+      <label for="studentEmail">Email Address</label>
+      <input 
+        type="email" 
+        id="studentEmail" 
+        formControlName="studentEmail" 
+        class="form-control">
+
+      @if (enrollForm.get('studentEmail')?.status === 'PENDING') {
+        <span class="status-checking">Checking email availability...</span>
+      }
+      @if (enrollForm.get('studentEmail')?.touched && enrollForm.get('studentEmail')?.errors?.['required']) {
+        <span class="error-msg">Email is required.</span>
+      }
+      @if (enrollForm.get('studentEmail')?.touched && enrollForm.get('studentEmail')?.errors?.['email']) {
+        <span class="error-msg">Please enter a valid email address.</span>
+      }
+      @if (enrollForm.get('studentEmail')?.touched && enrollForm.get('studentEmail')?.errors?.['emailTaken']) {
+        <span class="error-msg">This email address is already taken (mock check).</span>
+      }
+    </div>
+
+    <!-- Course ID -->
+    <div class="form-group">
+      <label for="courseId">Course ID</label>
+      <input 
+        type="text" 
+        id="courseId" 
+        formControlName="courseId" 
+        class="form-control">
+
+      @if (enrollForm.get('courseId')?.touched && enrollForm.get('courseId')?.errors?.['required']) {
+        <span class="error-msg">Course ID is required.</span>
+      }
+      @if (enrollForm.get('courseId')?.touched && enrollForm.get('courseId')?.errors?.['noCourseCode']) {
+        <!-- Task 5 Step 54: Custom sync validator message -->
+        <span class="error-msg">Course code starting with XX is not allowed.</span>
+      }
+    </div>
+
+    <!-- Preferred Semester -->
+    <div class="form-group">
+      <label for="preferredSemester">Preferred Semester</label>
+      <select 
+        id="preferredSemester" 
+        formControlName="preferredSemester" 
+        class="form-control">
+        <option value="Odd">Odd Semester</option>
+        <option value="Even">Even Semester</option>
+      </select>
+    </div>
+
+    <!-- Additional Courses FormArray Section (Task 5 Step 56) -->
+    <div class="form-group additional-courses-section">
+      <div class="section-header">
+        <label>Additional Courses</label>
+        <button type="button" class="btn btn-small btn-secondary" (click)="addCourse()">
+          + Add Course
+        </button>
+      </div>
+
+      <div formArrayName="additionalCourses" class="courses-list">
+        @for (ctrl of additionalCourses.controls; track ctrl; let i = $index) {
+          <div class="course-array-item">
+            <input 
+              [formControlName]="i" 
+              placeholder="Enter Additional Course Code" 
+              class="form-control">
+            <button type="button" class="btn btn-danger" (click)="removeCourse(i)">
+              Remove
+            </button>
+            @if (ctrl.touched && ctrl.invalid) {
+              <span class="error-msg block">Additional course code is required.</span>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Agree to Terms -->
+    <div class="form-group checkbox-group">
+      <label class="checkbox-container">
+        <input 
+          type="checkbox" 
+          id="agreeToTerms" 
+          formControlName="agreeToTerms">
+        <span class="checkmark"></span>
+        I agree to the terms and conditions of course registration.
+      </label>
+      @if (enrollForm.get('agreeToTerms')?.touched && enrollForm.get('agreeToTerms')?.errors?.['required']) {
+        <span class="error-msg block">You must agree to the terms before submitting.</span>
+      }
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" (click)="onReset()">
+        Reset Form
+      </button>
+      <button type="submit" class="btn btn-primary" [disabled]="enrollForm.invalid || enrollForm.pending">
+        Submit Request
+      </button>
+    </div>
+  </form>
+</div>

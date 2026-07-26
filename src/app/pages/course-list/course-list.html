@@ -1,0 +1,58 @@
+<div class="course-list-container">
+  <div class="list-header">
+    <h2>Available Courses</h2>
+    <p class="subtitle">Explore the list of available courses and track your academic progress.</p>
+    <div class="search-bar-row">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (ngModelChange)="onSearchChange()" 
+        placeholder="Filter by course name or code..." 
+        class="form-control filter-input">
+    </div>
+  </div>
+
+  @if (errorMessage$ | async) {
+    <div class="alert alert-error mb-4">
+      {{ errorMessage$ | async }}
+    </div>
+  }
+
+  @if (isLoading$ | async) {
+    <!-- Loading State (Task 3 Step 25) -->
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading courses...</p>
+    </div>
+  } @else {
+    <!-- Course Grid / Empty State (Task 3 Step 28) -->
+    @if (courses$ | async; as courses) {
+      @if (courses.length > 0) {
+        <div class="courses-grid">
+          <app-course-card 
+            *ngFor="let course of courses; let i = index; trackBy: trackByCourseId"
+            [course]="course"
+            (enrollRequested)="onEnroll($event)"
+            [appHighlight]="'rgba(99, 102, 241, 0.15)'">
+          </app-course-card>
+        </div>
+      } @else {
+        <ng-template [ngTemplateOutlet]="noCourses"></ng-template>
+      }
+    }
+  }
+
+  <!-- Empty State Template -->
+  <ng-template #noCourses>
+    <div class="no-courses-state">
+      <p>No courses available.</p>
+    </div>
+  </ng-template>
+
+  <!-- Selected Course Indicator (Task 2 Step 24) -->
+  @if (selectedCourseId) {
+    <div class="selection-indicator">
+      <p>Selected course ID: <strong>{{ selectedCourseId }}</strong></p>
+    </div>
+  }
+</div>

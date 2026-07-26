@@ -1,0 +1,14 @@
+<div class="widget-container">
+  <h4>Course Summary Widget</h4>
+  <p class="summary-text">
+    Currently tracking <strong>{{ (courses$ | async)?.length || 0 }}</strong> courses in the singleton CourseService / Store.
+  </p>
+  @if (courses$ | async; as courses) {
+    <ul class="widget-course-list">
+      <li *ngFor="let course of courses">
+        <span class="course-code-badge">{{ course.code }}</span>
+        <span class="course-name">{{ course.name }}</span>
+      </li>
+    </ul>
+  }
+</div>

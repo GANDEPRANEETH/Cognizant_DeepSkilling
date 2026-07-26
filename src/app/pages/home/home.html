@@ -1,0 +1,48 @@
+<div class="home-container">
+  <div class="hero-section">
+    <h1>{{ portalName }}</h1>
+    <p class="subtitle">Empowering students to manage their course registrations, monitor performance, and excel academically.</p>
+    
+    <div class="stats-grid">
+      <div class="stat-card">
+        <!-- Live Courses Count from Store (Task 6 Step 61) -->
+        <span class="stat-value">{{ (courses$ | async)?.length || 0 }}</span>
+        <span class="stat-label">Courses Available</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">3</span>
+        <span class="stat-label">Enrolled Courses</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">3.8</span>
+        <span class="stat-label">Current GPA</span>
+      </div>
+    </div>
+
+    <div class="action-section">
+      <button class="btn btn-primary" [disabled]="!isPortalActive" (click)="onEnrollClick()">
+        Enroll Now / Add Demo Course
+      </button>
+      @if (message) {
+        <div class="alert alert-success mt-3">
+          {{ message }} (A demo course has also been added to the singleton CourseService).
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="search-section">
+    <h3>Quick Search</h3>
+    <div class="search-box">
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Search courses, instructors..." class="form-control">
+    </div>
+    @if (searchTerm) {
+      <p class="search-indicator">Searching for: <span>{{ searchTerm }}</span></p>
+    }
+  </div>
+
+  <!-- Shared Service Verification Widget (Task 6 Step 62) -->
+  <div class="widget-section mt-4">
+    <app-course-summary-widget></app-course-summary-widget>
+  </div>
+</div>

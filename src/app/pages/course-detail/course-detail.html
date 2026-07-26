@@ -1,0 +1,46 @@
+<div class="detail-container">
+  @if (course) {
+    <div class="course-detail-card">
+      <div class="detail-header">
+        <div>
+          <span class="course-code">{{ course.code }}</span>
+          <h2>{{ course.name }}</h2>
+        </div>
+        <div class="status-badge-container">
+          @if (course.gradeStatus === 'passed') {
+            <span class="badge badge-success">Passed</span>
+          } @else if (course.gradeStatus === 'failed') {
+            <span class="badge badge-error">Failed</span>
+          } @else {
+            <span class="badge badge-warning">Pending</span>
+          }
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="detail-body">
+        <p class="credits"><strong>Credits:</strong> {{ course.credits | creditLabel }}</p>
+        <p class="instructor"><strong>Instructor:</strong> Prof. Alex Mercer</p>
+        <p class="schedule"><strong>Schedule:</strong> Mon/Wed 10:00 AM - 11:30 AM</p>
+        <p class="description">
+          This course offers a comprehensive look at the subject matter, including theoretical foundations, 
+          practical hands-on lab sessions, and group projects designed to equip students with real-world skills.
+        </p>
+      </div>
+
+      <div class="detail-footer">
+        <a routerLink="/courses" class="btn btn-secondary">&larr; Back to List</a>
+        <button class="btn btn-action" [class.enrolled]="enrollmentService.isEnrolled(course.id)" (click)="toggleEnroll()">
+          {{ enrollmentService.isEnrolled(course.id) ? 'Unenroll from Course' : 'Register / Enroll' }}
+        </button>
+      </div>
+    </div>
+  } @else {
+    <div class="error-card">
+      <h3>Course Not Found</h3>
+      <p>The course you are looking for does not exist or has been removed.</p>
+      <a routerLink="/courses" class="btn btn-primary mt-2">Back to Courses</a>
+    </div>
+  }
+</div>
